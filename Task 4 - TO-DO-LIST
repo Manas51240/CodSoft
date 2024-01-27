@@ -1,0 +1,98 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct Task {
+    string name;
+    bool completed;
+
+    Task(const string& n) : name(n), completed(false) {}
+};
+
+class ToDoList {
+private:
+    vector<Task> tasks;
+
+public:
+   
+    void addTask(const string& taskName) {
+        Task newTask(taskName);
+        tasks.push_back(newTask);
+        cout << "Task added successfully!" << endl;
+    }
+
+    void viewTasks() {
+        if (tasks.empty()) {
+            cout << "No tasks in the list." << endl;
+        } else {
+            cout << "Tasks in the list:" << endl;
+            for (size_t i = 0; i < tasks.size(); ++i) {
+                cout << i + 1 << ". ";
+                if (tasks[i].completed) cout << "[Completed] ";
+                cout << tasks[i].name << endl;
+            }
+        }
+    }
+
+    void completeTask(size_t index) {
+        if (index >= 1 && index <= tasks.size()) {
+            tasks[index - 1].completed = true;
+            cout << "Task marked as completed!" << endl;
+        } else {
+            cout << "Invalid task index!" << endl;
+        }
+    }
+
+    void deleteTask(size_t index) {
+        if (index >= 1 && index <= tasks.size()) {
+            tasks.erase(tasks.begin() + index - 1);
+            cout << "Task deleted successfully!" << endl;
+        } else {
+            cout << "Invalid task index!" << endl;
+        }
+    }
+};
+
+int main() {
+    ToDoList toDoList;
+    int choice;
+    string taskName;
+    size_t index;
+
+    do {
+        cout << "\n1. Add Task\n2. View Tasks\n3. Complete Task\n4. Delete Task\n5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter task name: ";
+                cin.ignore();
+                getline(cin, taskName);
+                toDoList.addTask(taskName);
+                break;
+            case 2:
+                toDoList.viewTasks();
+                break;
+            case 3:
+                cout << "Enter task index to mark as completed: ";
+                cin >> index;
+                toDoList.completeTask(index);
+                break;
+            case 4:
+                cout << "Enter task index to delete: ";
+                cin >> index;
+                toDoList.deleteTask(index);
+                break;
+            case 5:
+                cout << "Exiting program...";
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    } while (choice != 5);
+
+    return 0;
+}
